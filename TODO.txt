@@ -1,0 +1,30 @@
+	Help:
+	The purpose of this tool is to allow users to control the inputs being displayed on the outputs present in Ops Suite 1. 
+	Click on any of the following for more information: 
+	Outputs – Highlighted here are the six displays in Ops Suite 1 as well as the 2 outputs that will direct an input source back to the Main MCC video switch. 
+	Input Sources – Once an output has been chosen the Input Source Panel (below) shows all the 8 inputs you can select to display on that output. 
+	Change the source for a display
+	Change the source for multiple displays at once
+	Turn Display On/Off
+	Reset to default configuration
+	Change the Cable-TV Channel 
+                                 
+x Remove tag from bg img
+? Recenter pup when 1.0 - check on mobile
+x Wrap when no header
+x Rm Debug status
+x “Choose Input for:” on pup
+x Change "Show()" animation origin
+x Resize help pups when browser resizes
+x Enlarge mn pg btn text when no outs checked
+x Enlarge mn pg btn text/icon/spacding for small devs
+x Popup to confirm changing to default config
+x Put back default config btn os small devices
+  Uglify for IE
+
+Home...
+x Size "To MCC Video" bkg imgs the same as TVs
+x X, BACK buttons on help
+x Regen help images - bullet, X, BACK
+  
+
