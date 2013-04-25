@@ -804,7 +804,7 @@ $(function()
 			// Make the numpad the same height as the source popup
 		numpad_size_and_offset_set_center( height_dest_div * pup_scalefactor, height_outer );
 
-		vhelp_size_and_offset_set( height_dest_div * 0.95, posn_dest.top + (height_dest_div * 0.19), posn_dest.left + (width_body * 0.25) );
+		vhelp_size_and_offset_set( height_dest_div * 0.90, posn_dest.top + (height_dest_div * 0.19), posn_dest.left + (width_header_div * 0.27) );
 
 		// Scale text elements as well
 		btn_varitext_fontsize = height_dest_div * 0.033;
@@ -831,8 +831,8 @@ $(function()
 
 
 
-//	var jrest_uri = "http://localhost:8080/";
-	var jrest_uri = "http://opssuite1.vader.jsc.nasa.gov:8000/";
+	var jrest_uri = "http://localhost:8080/";
+//	var jrest_uri = "http://opssuite1.vader.jsc.nasa.gov:8000/";
 	var reload_mapping = false;
 
 	function device_control_mappings_reload()

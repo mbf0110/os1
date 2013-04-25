@@ -56,11 +56,11 @@ function vhelp_create( fn_exit )
 	$(document.body).append( '\
 		<div id="vhelp-cntnr-mn" class="vhelp-cntnr vhelp-bkg">\
 			<img id="vhelp-btn-x"  src="vhelp/img/vhelp-btn-x.png">\
-			<div class="vhelp-title vhelp-bkg"><i><span style="font-size:larger;">A</span>bout the <span style="font-size:larger;">D</span>isplay <span style="font-size:larger;">C</span>ontrol...</i></div>\
+			<div class="vhelp-title vhelp-bkg"><i><span style="font-size:larger;">A</span>bout&nbsp;the&nbsp;<span style="font-size:larger;">D</span>isplay&nbsp;<span style="font-size:larger;">C</span>ontrol...</i></div>\
 			<div class="vhelp-info-cntnr">\
 				<img class="info-icon newln" src="vhelp/img/vhelp-info-lg.png">\
 				<div class="vhelp-info-intro">\
-					This tool provides a user the ability to control the inputs being displayed on the outputs in the Ops Suite 1.<br/>\
+					This tool provides a user the ability to control the inputs being displayed on the outputs in the Ops&nbsp;Suite&nbsp;1.<br/>\
 					Click on any of the following for more information\
 				</div>\
 				<div id="h-cap-about-out" class="newln indent">\
@@ -92,6 +92,7 @@ function vhelp_create( fn_exit )
 					<span class="vhelp-info-item vhelp-cap-bkg">Change the cable-TV channel.</span>\
 				</div>\
 			</div>\
+			<div class="disclaimer">These pages are best viewed on anything but Internet Explorer.</div>\
 		</div>\
 		<div id="vhelp-cntnr-subup" class="vhelp-cntnr vhelp-bkg">\
 			<img id="vhelp-subup-x"  src="vhelp/img/vhelp-btn-x.png">\
@@ -450,10 +451,7 @@ function vhelp_keyup( evt )
 }//_keyup()
 
 
-var font_size;
-var font_size_title;
-
-function $_vhelp_size_and_offset_set( $o, height, proportions, offset )
+function $_vhelp_size_and_offset_set( $o, height, proportions, offset, font_size, font_size_title )
 {
 	if( $o )
 	{
@@ -473,6 +471,7 @@ var hlp_posn_mlt  = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 var hlp_posn_pwr  = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 var hlp_posn_dflt = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 var hlp_posn_chn  = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
+
 var hlp_size_out  = { height:100, props:1.4 };
 var hlp_size_in   = { height:100, props:1.4 };
 var hlp_size_sgl  = { height:100, props:1.4 };
@@ -481,50 +480,52 @@ var hlp_size_pwr  = { height:100, props:1.4 };
 var hlp_size_dflt = { height:100, props:1.4 };
 var hlp_size_chn  = { height:100, props:1.4 };
 
+var font_size;
+var font_size_title;
+
 
 function vhelp_size_and_offset_set( height, l_top, l_left )
 {
-	font_size = height * 0.0480;
-	font_size_title = height * 0.062;
+	font_size = height * 0.0500;
+	font_size_title = height * 0.066;
 	var hlp_props_default = 876 / 512; // Dimensions of the background image
-	$( "#vhelp-subup-x" ).width( height * 0.065 ).height( height * 0.065 );
+	$( "#vhelp-subup-x" ).width( height * 0.099 ).height( height * 0.099 );
 
 
 	hlp_posn.show = { top:l_top, left:l_left };
-	$_vhelp_size_and_offset_set( $_vhelp, height, hlp_props_default, hlp_posn.show );
+	$_vhelp_size_and_offset_set( $_vhelp, height, hlp_props_default, hlp_posn.show, font_size, font_size_title );
 
 	var hlp_width_max = $_vhelp.width();
 
-	hlp_posn_out.show  = hlp_posn_out.hide = { top:l_top + (height * 0.20), left:l_left + (hlp_width_max * 0.42) };
+	hlp_posn_out.show  = hlp_posn_out.hide = { top:l_top + (height * 0.20), left:l_left + (hlp_width_max * 0.44) };
 	hlp_size_out.height = height * 0.63;
 	hlp_size_out.props = hlp_props_default * 0.9;
 
-	hlp_posn_in.show   = hlp_posn_in.hide = { top:l_top + (height * 0.25), left:l_left + (hlp_width_max * 0.10) };
-	hlp_size_in.height = height * 0.75;
+	hlp_posn_in.show   = hlp_posn_in.hide = { top:l_top + (height * 0.10), left:l_left + (hlp_width_max * 0.10) };
+	hlp_size_in.height = height * 0.70;
 	hlp_size_in.props = hlp_props_default;
 
-	hlp_posn_sgl.show  = hlp_posn_sgl.hide = { top:l_top + (height * 0.25), left:l_left * 0.80 };
+	hlp_posn_sgl.show  = hlp_posn_sgl.hide = { top:l_top + (height * 0.25), left:l_left - (hlp_width_max * 0.10) };
 	hlp_size_sgl.height = height * 0.75;
 	hlp_size_sgl.props = hlp_props_default;
 
-	hlp_posn_mlt.show  = hlp_posn_mlt.hide = { top:l_top + (height * 0.035), left:l_left * 0.20 };
+	hlp_posn_mlt.show  = hlp_posn_mlt.hide = { top:l_top + (height * 0.070), left:l_left - (hlp_width_max * 0.27) };
 	hlp_size_mlt.height = height * 0.85;
 	hlp_size_mlt.props = hlp_props_default;
 
-	hlp_posn_pwr.show  = hlp_posn_pwr.hide = { top:l_top + (height * 0.28), left:l_left + (hlp_width_max * 0.07) };
-	hlp_size_pwr.height = height * 0.5;
+	hlp_posn_pwr.show  = hlp_posn_pwr.hide = { top:l_top + (height * 0.32), left:l_left + (hlp_width_max * 0.07) };
+	hlp_size_pwr.height = height * 0.45;
 	hlp_size_pwr.props = hlp_props_default;
 
-	hlp_posn_dflt.show = hlp_posn_dflt.hide = { top:l_top + (height * 0.02), left:l_left * 0.85 };
-	hlp_size_dflt.height = height * 0.57;
+	hlp_posn_dflt.show = hlp_posn_dflt.hide = { top:l_top + (height * 0.07), left:l_left - (hlp_width_max * 0.02) };
+	hlp_size_dflt.height = height * 0.52
 	hlp_size_dflt.props = hlp_props_default;
 
-	hlp_posn_chn.show  = hlp_posn_chn.hide = { top:l_top + (height * 0.11), left:l_left * 1.0 };
-	hlp_size_chn.height = height * 0.5;
+	hlp_posn_chn.show  = hlp_posn_chn.hide = { top:l_top + (height * 0.14), left:l_left - (hlp_width_max * 0.02) };
+	hlp_size_chn.height = height * 0.52;
 	hlp_size_chn.props = hlp_props_default;
 
-	if( vhelp_is_showing_subpup() )
-		vhelp_subup_size_and_offset_set();
+	vhelp_subup_size_and_offset_set();
 }
 
 function _vhelp_show() // internal
@@ -583,11 +584,17 @@ function vhelp_subup_size_and_offset_set()
 		vhelp_subup_size = hlp_size_chn;
 	}
 
-	$_vhelp_size_and_offset_set( $_vhelp_subup, vhelp_subup_size.height, vhelp_subup_size.props, vhelp_subup_posn.show );
+	if( vhelp_is_showing_subpup() )
+	{
+		$_vhelp_size_and_offset_set( $_vhelp_subup, vhelp_subup_size.height, vhelp_subup_size.props, vhelp_subup_posn.show, font_size * 0.95, font_size_title * 0.95 );
+	}
 }
 
-//function vhelp_subup_show() { os1_popup_show( $_vhelp_subup, 400, vhelp_subup_posn.hide, vhelp_subup_posn.show ); }
-function vhelp_subup_hide() { os1_popup_hide( $_vhelp_subup, 400, vhelp_subup_posn.hide ); }
+
+function vhelp_subup_hide()
+{
+	os1_popup_hide( $_vhelp_subup, 400, vhelp_subup_posn.hide );
+}
 
 function vhelp_subup_show()
 {
@@ -595,14 +602,15 @@ function vhelp_subup_show()
 	os1_popup_show( $_vhelp_subup, 400, vhelp_subup_posn.hide, vhelp_subup_posn.show );
 }
 
+
 										/**************************** ABOUT OUTPUTS POPUP */
 
 function vhelp_subup_create_out( fn_exit )
 {
 	vhelp_subup_fn_exit = fn_exit;
-	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">A</span>bout <span style="font-size:larger;">O</span>utputs</i>' );
+	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">A</span>bout&nbsp;<span style="font-size:larger;">O</span>utputs</i>' );
 	$_vhelp_subup_info.html(
-		'Highlighted here are the six Displays in Ops Suite 1. Also highlighted are the two Outputs that will direct an input source back to the Main MCC video switch.' );
+		'Highlighted here are the six Displays in Ops Suite&nbsp;1. Also highlighted are the two Outputs that will direct an input source back to the Main MCC video switch.' );
 }
 
 										/**************************** ABOUT INPUTS POPUP */
@@ -610,7 +618,7 @@ function vhelp_subup_create_out( fn_exit )
 function vhelp_subup_create_in( fn_exit )
 {
 	vhelp_subup_fn_exit = fn_exit;
-	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">A</span>bout <span style="font-size:larger;">I</span>nputs</i>' );
+	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">A</span>bout&nbsp;<span style="font-size:larger;">I</span>nputs</i>' );
 	$_vhelp_subup_info.html(
 		'Once an Output has been selected, the Input Source Panel <img class="vsrc-icon" src="vhelp/img/vsrc.jpg"> will pop up listing the eight Inputs from which the user \
 		can select to display on the selected Output.' );
@@ -621,7 +629,7 @@ function vhelp_subup_create_in( fn_exit )
 function vhelp_subup_create_sgl( fn_exit )
 {
 	vhelp_subup_fn_exit = fn_exit;
-	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">S</span>ingle <span style="font-size:larger;">O</span>utput <span style="font-size:larger;">S</span>election </i>' );
+	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">S</span>ingle&nbsp;<span style="font-size:larger;">O</span>utput&nbsp;<span style="font-size:larger;">S</span>election </i>' );
 	$_vhelp_subup_info.html(
 		'When a single Output has been selected, the Input Source Panel <img class="vsrc-icon" src="vhelp/img/vsrc.jpg"> is used to connect \
 		an Input source to the Output. Power and volume for the Output can be controlled using the buttons on the right.' );
@@ -632,7 +640,7 @@ function vhelp_subup_create_sgl( fn_exit )
 function vhelp_subup_create_mlt( fn_exit )
 {
 	vhelp_subup_fn_exit = fn_exit;
-	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">M</span>ultiple <span style="font-size:larger;">O</span>utput <span style="font-size:larger;">S</span>election </i>' );
+	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">M</span>ultiple&nbsp;<span style="font-size:larger;">O</span>utput&nbsp;<span style="font-size:larger;">S</span>election </i>' );
 	$_vhelp_subup_info.html(
 		'<img class="vhelp-arrow" src="vhelp/img/vhelp-arrow-20.png">\
 		Clicking on the checkbox in the upper right-hand corner of the Output device allows the user to control more than one Output. \
@@ -646,7 +654,7 @@ function vhelp_subup_create_mlt( fn_exit )
 function vhelp_subup_create_pwr( fn_exit )
 {
 	vhelp_subup_fn_exit = fn_exit;
-	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">P</span>ower <span style="font-size:larger;">D</span>isplay</i>' );
+	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">P</span>ower&nbsp;<span style="font-size:larger;">D</span>isplay</i>' );
 	$_vhelp_subup_info.html(
 		'Click on the power button in the lower right-hand corner of the Display to turn it on or off.\
 		<img class="vhelp-arrow-pwr newln" src="vhelp/img/vhelp-ltarrow.png">' );
@@ -657,9 +665,9 @@ function vhelp_subup_create_pwr( fn_exit )
 function vhelp_subup_create_dflt( fn_exit )
 {
 	vhelp_subup_fn_exit = fn_exit;
-	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">R</span>eset <span style="font-size:larger;">C</span>onfiguration</i>' );
+	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">R</span>eset&nbsp;<span style="font-size:larger;">C</span>onfiguration</i>' );
 	$_vhelp_subup_info.html(
-		'Click on the "Default Configuration" button to reset all the Displays to have their default Inputs.\
+		'Click on the "Default Configuration" button to reset all the Displays to their default Inputs.\
 		<img class="vhelp-arrow-dflt newln" src="vhelp/img/vhelp-rtarrow.png">' );
 }
 
@@ -668,7 +676,7 @@ function vhelp_subup_create_dflt( fn_exit )
 function vhelp_subup_create_chn( fn_exit )
 {
 	vhelp_subup_fn_exit = fn_exit;
-	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">C</span>hange <span style="font-size:larger;">C</span>hannel</i>' );
+	$_vhelp_subup_title.html( '<i><span style="font-size:larger;">C</span>hange&nbsp;<span style="font-size:larger;">C</span>hannel</i>' );
 	$_vhelp_subup_info.html(
 		'Click on the "Change TV Channel" button to change the channel on the Cable TV Input source.\
 		<img class="vhelp-arrow-chn newln" src="vhelp/img/vhelp-rtarrow.png">' );
