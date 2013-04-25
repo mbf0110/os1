@@ -143,7 +143,12 @@ function status_set( msg )
 var os1_nav_is_mobile = ( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) );
 var os1_is_low_res = false;
 function os1_is_small_device() { return os1_nav_is_mobile || os1_is_low_res; }
+
 var os1_ie_vers = 0; // not IE
+function os1_ie_uglify()
+{
+	return( (os1_ie_vers > 0) && (os1_ie_vers < 10) );
+}
 
 
 function os1_popup_show( $o, duration, posn_start, posn_end )
@@ -381,7 +386,7 @@ $(function()
 		vhelp_is_showing = false;
 	} );
 
-	if( (os1_ie_vers > 0) && (os1_ie_vers < 10) )
+	if( os1_ie_uglify() )
 	{
 		$_vdestinations[0].removeClass( "vdest-1-bkg" ).addClass( "vdest-bkg-ie" );
 		$_vdestinations[1].removeClass( "vdest-2-bkg" ).addClass( "vdest-bkg-ie" );
@@ -774,7 +779,7 @@ $(function()
 
 		// Compute the output (destination) icon size
 		var height_icon = height_dest_div * 0.23/*whatever works*/;
-		if( (os1_ie_vers > 0) && (os1_ie_vers < 10) )
+		if( os1_ie_uglify() )
 			height_icon *= 0.95;
 		var width_icon =  height_icon * ratio_tv;
 

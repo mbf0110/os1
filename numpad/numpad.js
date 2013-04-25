@@ -140,7 +140,7 @@ function numpad_create( fn_exit, fn_channel )
 		.mousedown(  function() { _mousedown( $(this) );               return false; } )
 		.mouseup(    function() { _mouseup( $(this) );   npad_effect_set( $(this), null ); return false; } );
 
-	if( (os1_ie_vers > 0) && (os1_ie_vers < 10) )
+	if( os1_ie_uglify() )
 		$( "#npad-chn-win" ).removeClass( "npad-chn-win-bkg" ).addClass( "npad-chn-win-bkg-ie" );
 
 }// _create()

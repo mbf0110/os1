@@ -10,7 +10,7 @@
 #vhelp-cntnr-mn .info-icon	{ float:left;  width:12%;  margin-left:-3.0% }
 #vhelp-cntnr-mn .indent		{ margin-left:7.5%; }
 #vhelp-cntnr-mn .newln		{ clear:both; }
-#vhelp-cntnr-mn .disclaimer { clear:both;  float:left;  margin:2.5% 0 0 9%;  font-size:smaller;  font-size:smaller;  font-style:italic;  color:#eaeaae; }
+#vhelp-cntnr-mn .disclaimer { clear:both;  float:left;  width:90%;  margin:2.5% 0 0 9%;  font-size:smaller;  font-size:smaller;  font-style:italic; }
 
 .vhelp-title		{ float:left;  width:70%;  margin:2.0% 0 0 6.5%;  padding-left:2.0%;  background-image:url("img/vhelp-hdr-bkg.png"); }
 .vhelp-info-cntnr	{ float:left;  width:97%;  margin:0.5% 0 0 1.0%; /*border:2px solid red;*/ }

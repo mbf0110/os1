@@ -162,7 +162,7 @@ function vsources_create( fn_status, fn_exit, fn_volume, fn_power, fn_vsrc_click
 		.mousedown(  function() { vsrc_mousedown( $(this) ); return false; } )
 		.mouseup(    function() { vsrc_mouseup( $(this) ); return false; } );
 
-	if( (os1_ie_vers > 0) && (os1_ie_vers < 10) )
+	if( os1_ie_uglify() )
 	{
 		$_vsources_cntnr.removeClass( "vsource-cntnr-bkg" ).addClass( "vsource-cntnr-bkg-ie" );
 		$_vsources_cntnr.find( ".vsource-cntnr-inputs" ).addClass( "vsrc-cntnr-inputs-bkg-ie" );
