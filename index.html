@@ -1,4 +1,5 @@
 <!doctype html>
+	<!-- Need to know the IE version -->
 <!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
@@ -12,6 +13,7 @@
 	<meta name="description"	content="A website for controlling the displays in Ops Suite 1">
 	<meta name="author"	content="DD12">
 
+		<<!-- 0.75 scale factor gives a more reasonable viewport of 640 pixels on an ipod -->
 	<meta name="viewport" content="width=device-width, initial-scale=0.75">
 
 	<!--link rel="stylesheet" href="js/libs/jquery.mobile.structure-1.3.1.min.css"-->
@@ -26,7 +28,7 @@
 <div id="vdest-cntnr-outer">
 	<div id="vdest-cntnr-header" class="vdest-cntnr-brdr">
 	</div>
-	<img class="header-img" src="img/header1.png"> <!-- positioned absolutely and sized with javascript -->
+	<img class="header-img" src="img/header1.png"> <!-- The header image won't fit in the header div, so it is positioned absolutely and sized and located with javascript -->
 
 	<div id="vdest-cntnr-destinations" class="vdest-cntnr-brdr">
 
@@ -123,6 +125,7 @@
 <!--script src="/js/libs/jquery.mobile-1.3.1.min.js"></script-->
 <!--script src="/js/libs/jquery-ui.min.js"></script-->
 <!--script src="/js/libs/jquery.ui.touch-punch.min.js"></script-->
+
 <script src="numpad/numpad.js"></script>
 <script src="vsources/vsources.js"></script>
 <script src="vhelp/vhelp.js"></script>
@@ -130,31 +133,37 @@
 
 <script type="text/javascript">
 
+													/*****************
+													 *****************  Global parameters and funcs that need to be accessed by the pop-up's too
+													 *****************/
 
+	// Realtime status message in footer
 var el_status = document.getElementById( "vdest-status" );
 function status_set( msg )
 {
 	if( el_status )
-	{
-		el_status.innerHTML = msg || "Click on an output device or select the checkbox of devices to which to map an input source.";
-	}
+		el_status.innerHTML = msg || "Click on an Output device or select the checkbox of each Output to control.";
 }
 
+	// Mobile device detection. Likely not a complete list
 var os1_nav_is_mobile = ( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) );
-var os1_is_low_res = false;
+var os1_is_low_res = false; // When the screen size falls below a certain threshold, set to true and turn off some features
 function os1_is_small_device() { return os1_nav_is_mobile || os1_is_low_res; }
 
-var os1_ie_vers = 0; // not IE
+	// ID IE. Uglify if necessary
+var os1_ie_vers = 0; // 0 = not IE
 function os1_ie_uglify()
 {
-	return( (os1_ie_vers > 0) && (os1_ie_vers < 10) );
+	return( (os1_ie_vers > 0) && (os1_ie_vers < 10) ); // The site renders fine on IE 9... except for the IE9 at the console in the ops suite. Don't know why... so uglify if .lt. IE10
 }
 
 
+	// Show/hide animation... Set the $o (jquery object) at the starting position, and animate to the ending position
 function os1_popup_show( $o, duration, posn_start, posn_end )
 {
-	if( os1_is_small_device() )
+	if( os1_is_small_device() ) // No ani on mobile devices - they're too slow
 	{
+		$o.css( { opacity:1 } );
 		$o.show();
 	} else
 	{
@@ -189,6 +198,7 @@ function os1_popup_hide( $o, duration, posn_end )
 }
 
 
+	// Global cursor style functions where the "wait" style has priority
 var vdest_css_cursor_iswait = false;
 
 function vdest_css_cursor_wait( onoff )
@@ -648,7 +658,7 @@ $(function()
 		status_set( "Enter in the channel number for the TV source." );
 		return false;
 	} )
-	.mouseenter( function() { vdest_btn_mouseenter( $(this), "Click to change the channel of a connected TV source." ); return false; } )
+	.mouseenter( function() { vdest_btn_mouseenter( $(this), "Click to change the cable-TV channel." ); return false; } )
 	.mouseleave( function() { vdest_btn_mouseleave( $(this), null ); return false; } )
 	.mousedown(  function() { vdest_btn_mousedown( $(this) ); return false; } )
 	.mouseup(    function() { vdest_btn_mouseup( $(this) ); return false; } );

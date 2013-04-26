@@ -1,10 +1,11 @@
-/* Help overlay. Requires jquery.
+ /* Help overlay. Requires jquery.
 */
 
-var $_vhelp = null;
-var $_vhelp_ary;
-var $_vhelp_btn_exit;
+var $_vhelp = null; // The outer div
+var $_vhelp_ary; // The active screen elements
+var $_vhelp_btn_exit; // Closes the help
 
+	// Flag when true means the associated subup (sub-popup) is showing
 var vhelp_is_showing_out = false;
 var vhelp_is_showing_in  = false;
 var vhelp_is_showing_sgl = false;
@@ -12,13 +13,15 @@ var vhelp_is_showing_mlt = false;
 var vhelp_is_showing_pwr = false;
 var vhelp_is_showing_dflt = false;
 var vhelp_is_showing_chn = false;
+	// When true any subup is showing
 function vhelp_is_showing_subpup() { return (vhelp_is_showing_out || vhelp_is_showing_in || vhelp_is_showing_sgl || vhelp_is_showing_mlt || vhelp_is_showing_pwr || vhelp_is_showing_dflt || vhelp_is_showing_chn); }
 
-var $_vhelp_subup;
-var $_vhelp_subup_title;
-var $_vhelp_subup_info;
+var $_vhelp_subup; // The outer div for a subup, common among all subups
+var $_vhelp_subup_title; // The element containing the title for each subup
+var $_vhelp_subup_info; // The element containing the content for each subup
 
 
+	// Dynamic mouse effects...
 function vhelp_effect_set( $o, new_class )
 {
 	if( $o )
@@ -50,7 +53,7 @@ function vhelp_mup( $o )
 	$o.css( "opacity", 1.0 );
 }
 
-// Generate the html for numpad
+	// Generates the html for the help outer div and the subup div
 function vhelp_create( fn_exit )
 {
 	$(document.body).append( '\
@@ -65,34 +68,34 @@ function vhelp_create( fn_exit )
 				</div>\
 				<div id="h-cap-about-out" class="newln indent">\
 					<img src="vhelp/img/vhelp-bullet.png">\
-					<span class="vhelp-info-item vhelp-cap-bkg">About Outputs,</span>\
+					<span class="vhelp-info-item vhelp-cap-bkg">About Outputs</span>\
 				</div>\
 				<div id="h-cap-about-in" class="newln indent">\
 					<img src="vhelp/img/vhelp-bullet.png">\
-					<span class="vhelp-info-item vhelp-cap-bkg">About Inputs,</span>\
+					<span class="vhelp-info-item vhelp-cap-bkg">About Inputs </span>\
 				</div>\
 				<div id="h-cap-input-single" class="newln indent">\
 					<img src="vhelp/img/vhelp-bullet.png">\
-					<span class="vhelp-info-item vhelp-cap-bkg">Change the Input Source for a single display,</span>\
+					<span class="vhelp-info-item vhelp-cap-bkg">Change the Input Source for a single display</span>\
 				</div>\
 				<div id="h-cap-input-multi" class="newln indent">\
 					<img src="vhelp/img/vhelp-bullet.png">\
-					<span class="vhelp-info-item vhelp-cap-bkg">Change the Input Source for multiple displays at once,</span>\
+					<span class="vhelp-info-item vhelp-cap-bkg">Change the Input Source for multiple displays at once</span>\
 				</div>\
 				<div id="h-cap-power" class="newln indent">\
 					<img src="vhelp/img/vhelp-bullet.png">\
-					<span class="vhelp-info-item vhelp-cap-bkg">Turn a display on or off,</span>\
+					<span class="vhelp-info-item vhelp-cap-bkg">Turn a display on or off</span>\
 				</div>\
 				<div id="h-cap-default" class="newln indent">\
 					<img src="vhelp/img/vhelp-bullet.png">\
-					<span class="vhelp-info-item vhelp-cap-bkg">Reset to the default configuration,</span>\
+					<span class="vhelp-info-item vhelp-cap-bkg">Reset to the default configuration</span>\
 				</div>\
 				<div id="h-cap-tvchan" class="newln indent">\
 					<img src="vhelp/img/vhelp-bullet.png">\
-					<span class="vhelp-info-item vhelp-cap-bkg">Change the cable-TV channel.</span>\
+					<span class="vhelp-info-item vhelp-cap-bkg">Change the cable-TV channel </span>\
 				</div>\
 			</div>\
-			<div class="disclaimer">These pages are best viewed on anything but Internet Explorer.</div>\
+			<!--div class="disclaimer">These pages are best viewed on anything but Internet Explorer.</div-->\
 		</div>\
 		<div id="vhelp-cntnr-subup" class="vhelp-cntnr vhelp-bkg">\
 			<img id="vhelp-subup-x"  src="vhelp/img/vhelp-btn-x.png">\
@@ -103,7 +106,7 @@ function vhelp_create( fn_exit )
 				</div>\
 				<div id="vhelp-subup-back" class="newln indent">\
 					<img class="back-icon" src="vhelp/img/vhelp-back.png">\
-					<i>Go Back</i>\
+					<span class="vhelp-goback"><i>Go&nbsp;Back</i></span>\
 				</div>\
 			</div>\
 		</div>'	);
@@ -112,60 +115,55 @@ function vhelp_create( fn_exit )
 
 	$_vhelp_ary = new Array ( $( "#h-cap-about-out" ), $( "#h-cap-about-in" ), $( "#h-cap-input-single" ), $( "#h-cap-input-multi" ), $( "#h-cap-power" ), $( "#h-cap-default" ), $( "#h-cap-tvchan" ) );
 
+		// Mouse down/up the same for all main help active screen elements
 	for( var bx = 0; bx < $_vhelp_ary.length; bx++ )
 	{
-		$_vhelp_ary[bx].mousedown( function()
-		{
-			vhelp_mdown( $(this) );
-			return false;
-		} ).mouseup( function()
-		{
-			vhelp_mup( $(this) );
-			return false;
-		} );
+		$_vhelp_ary[bx]
+		.mousedown( function() { vhelp_mdown( $(this) ); return false; } )
+		.mouseup(   function() { vhelp_mup( $(this) ); return false; } );
 	}//for bx
 
+		// Each main help page active screen element has unique click, mouseenter, mouseleave functionality
 	$_vhelp_ary[0].click( function()              // ABOUT OUTPUTS
 	{
-		vhelp_subup_create_out( function()//exit 'out'
+			// Creates the "about outputs" subup, passes in an exit function that gets called when the subub is closed
+			// 'xit' when true means the X button was clicked - exit all the way out of help
+			// 'xit' when false means to exit the subup, then show the main help page
+		vhelp_subup_create_out( function( xit )//exit 'out'
 		{
 			vhelp_is_showing_out = false;
+
+				// Clear the hilights on the home page
 			for( var dx = 0; dx < $_vdestinations.length; dx++ )
 				$_vdestinations[dx].removeClass( "vhelp-vdest-effect-bigger" );
-			_vhelp_show();
+
+			if( xit ) fn_exit(); // all the way out
+			else _vhelp_show(); // show main help
 		} );
-		
+
+			// Clear the mouse effects on the main help page active screen elements before showing the subup
 		for( var bx = 0; bx < $_vhelp_ary.length; bx++ )
 			vhelp_mleave( $_vhelp_ary[bx] );
 
 		vhelp_is_showing_out = true;
-		_vhelp_hide();
-		vhelp_subup_show();
+		_vhelp_hide(); // Hide the main help page
+		vhelp_subup_show(); // Show the subup
+
+			// Hilight the outputs on the home (vdest) page when this subup is shown
 		for( var dx = 0; dx < $_vdestinations.length; dx++ )
 			$_vdestinations[dx].addClass( "vhelp-vdest-effect-bigger" );
 		return false;
-	} ).mouseenter( function()
-	{
-		if( !vhelp_is_showing_out )
-		{
-			vhelp_menter( $(this) );
-		}
-		return false;
-	} ).mouseleave( function()
-	{
-		if( !vhelp_is_showing_out )
-		{
-			vhelp_mleave( $(this) );
-		}
-		return false;
-	} );
+	} )
+	.mouseenter( function() { vhelp_menter( $(this) ); return false; } )
+	.mouseleave( function() { vhelp_mleave( $(this) ); return false; } );
 
 	$_vhelp_ary[1].click( function()              // ABOUT INPUTS
 	{
-		vhelp_subup_create_in( function()//exit 'in'
+		vhelp_subup_create_in( function( xit )//exit 'in'
 		{
 			vhelp_is_showing_in = false;
-			_vhelp_show();
+			if( xit ) fn_exit();
+			else _vhelp_show();
 		} );
 		
 		for( var bx = 0; bx < $_vhelp_ary.length; bx++ )
@@ -175,28 +173,17 @@ function vhelp_create( fn_exit )
 		_vhelp_hide();
 		vhelp_subup_show();
 		return false;
-	} ).mouseenter( function()
-	{
-		if( !vhelp_is_showing_pwr )
-		{
-			vhelp_menter( $(this) );
-		}
-		return false;
-	} ).mouseleave( function()
-	{
-		if( !vhelp_is_showing_pwr )
-		{
-			vhelp_mleave( $(this) );
-		}
-		return false;
-	} );
+	} )
+	.mouseenter( function() { vhelp_menter( $(this) ); return false; } )
+	.mouseleave( function() { vhelp_mleave( $(this) ); return false; } );
 
 	$_vhelp_ary[2].click( function()              // OUTPUT SINGLE SELECT
 	{
-		vhelp_subup_create_sgl( function()//exit sgl
+		vhelp_subup_create_sgl( function( xit )//exit sgl
 		{
 			vhelp_is_showing_sgl = false;
-			_vhelp_show();
+			if( xit ) fn_exit();
+			else _vhelp_show();
 			$_vdestinations[3].removeClass( "vhelp-vdest-effect-bigger" );
 		} );
 		
@@ -206,24 +193,34 @@ function vhelp_create( fn_exit )
 		vhelp_is_showing_sgl = true;
 		_vhelp_hide();
 		vhelp_subup_show();
-		for( var dx = 0; dx < $_vdestinations.length-2; dx++ )
+
+			// Remove the vdest main page mouseover hilights
+		for( var dx = 0; dx < $_vdestinations.length; dx++ )
 			$_vdestinations[dx].removeClass( "vhelp-vdest-effect-bigger" );
+
+			// When the sgl subup is shown, hilight the example output device for this subup to reference
 		$_vdestinations[3].addClass( "vhelp-vdest-effect-bigger" );
+
 		return false;
 	} ).mouseenter( function()
 	{
 		if( !vhelp_is_showing_sgl )
 		{
 			vhelp_menter( $(this) );
+				// Hilight all the output devices on the vdest main page
 			for( var dx = 0; dx < $_vdestinations.length; dx++ )
 				$_vdestinations[dx].addClass( "vhelp-vdest-effect-bigger" );
 		}
 		return false;
 	} ).mouseleave( function()
 	{
+			// Perform the mouse effect only when the subup is NOT being shown.
+			// Performing a mouseleave when the subup is shown will clear the hilighted output that the subup references
 		if( !vhelp_is_showing_sgl )
 		{
 			vhelp_mleave( $(this) );
+
+				// Remove hilights from the output devices on the vdest main page
 			for( var dx = 0; dx < $_vdestinations.length; dx++ )
 				$_vdestinations[dx].removeClass( "vhelp-vdest-effect-bigger" );
 		}
@@ -232,10 +229,11 @@ function vhelp_create( fn_exit )
 
 	$_vhelp_ary[3].click( function()              // CHECKBOX MULTI SELECT
 	{
-		vhelp_subup_create_mlt( function()//exit mlt
+		vhelp_subup_create_mlt( function( xit )//exit mlt
 		{
 			vhelp_is_showing_mlt = false;
-			_vhelp_show();
+			if( xit ) fn_exit();
+			else _vhelp_show();
 			vdest_cbox_uncheck( $_vdestinations[0], null );
 			vdest_cbox_uncheck( $_vdestinations[2], null );
 			vdest_cbox_uncheck( $_vdestinations[4], null );
@@ -247,12 +245,18 @@ function vhelp_create( fn_exit )
 		vhelp_is_showing_mlt = true;
 		_vhelp_hide();
 		vhelp_subup_show();
+
+			// Clear all the checked boxes on the vdest main page
 		for( var dx = 0; dx < $_vdestinations.length; dx++ )
 			$_vdestinations[dx].find( ".vdest-tvbtn-cbox" ).attr( "src", "img/cbox_clr.png" );
+
+			// Check a few example boxes for the subup to reference
 		vdest_cbox_check( $_vdestinations[0], null );
 		vdest_cbox_check( $_vdestinations[2], null );
 		vdest_cbox_check( $_vdestinations[4], null );
 		vdest_btn_selected_show();
+
+			// Hilight the active element on the vdest main page. The mlt subup points to it.
 		$_vdest_btn_selected.addClass( "vhelp-vdest-effect-bigger" );
 		return false;
 	} ).mouseenter( function()
@@ -277,10 +281,11 @@ function vhelp_create( fn_exit )
 
 	$_vhelp_ary[4].click( function()              // POWER TOGGLE
 	{
-		vhelp_subup_create_pwr( function()//exit pwr
+		vhelp_subup_create_pwr( function( xit )//exit pwr
 		{
 			vhelp_is_showing_pwr = false;
-			_vhelp_show();
+			if( xit ) fn_exit();
+			else _vhelp_show();
 			$_vdestinations[5].find( ".vdest-tvbtn-power" ).removeClass( "vhelp-vdest-effect-bigger" );
 		} );
 		for( var bx = 0; bx < $_vhelp_ary.length; bx++ )
@@ -288,8 +293,12 @@ function vhelp_create( fn_exit )
 		vhelp_is_showing_pwr = true;
 		_vhelp_hide();
 		vhelp_subup_show();
+
+			// Hilight all the power buttons on the outputs on the vdest main page
 		for( var dx = 0; dx < $_vdestinations.length-2; dx++ )
 			$_vdestinations[dx].find( ".vdest-tvbtn-power" ).removeClass( "vhelp-vdest-effect-bigger" );
+
+			// Hilight a sample power button on the vdest main page. This subup points to it
 		$_vdestinations[5].find( ".vdest-tvbtn-power" ).addClass( "vhelp-vdest-effect-bigger" );
 		return false;
 	} ).mouseenter( function()
@@ -314,10 +323,11 @@ function vhelp_create( fn_exit )
 
 	$_vhelp_ary[5].click( function()              // DEFAULT SETUP
 	{
-		vhelp_subup_create_dflt( function()//exit dflt
+		vhelp_subup_create_dflt( function( xit )//exit dflt
 		{
 			vhelp_is_showing_dflt = false;
-			_vhelp_show();
+			if( xit ) fn_exit();
+			else _vhelp_show();
 			$( ".vdest-btn-default" ).removeClass( "vhelp-vdest-effect-bigger" );
 		} );
 		for( var bx = 0; bx < $_vhelp_ary.length; bx++ )
@@ -325,6 +335,8 @@ function vhelp_create( fn_exit )
 		vhelp_is_showing_dflt = true;
 		_vhelp_hide();
 		vhelp_subup_show();
+
+			// Hilight the "Default Config" active element on the vdest main page. This subup points to it
 		$( ".vdest-btn-default" ).addClass( "vhelp-vdest-effect-bigger" );
 		return false;
 	} ).mouseenter( function()
@@ -347,10 +359,11 @@ function vhelp_create( fn_exit )
 
 	$_vhelp_ary[6].click( function()              // CHANGE CHANNEL
 	{
-		vhelp_subup_create_chn( function()//exit chn
+		vhelp_subup_create_chn( function( xit )//exit chn
 		{
 			vhelp_is_showing_chn = false;
-			_vhelp_show();
+			if( xit ) fn_exit();
+			else _vhelp_show();
 			$( ".vdest-btn-numpad" ).removeClass( "vhelp-vdest-effect-bigger" );
 		} );
 		for( var bx = 0; bx < $_vhelp_ary.length; bx++ )
@@ -358,6 +371,8 @@ function vhelp_create( fn_exit )
 		vhelp_is_showing_chn = true;
 		_vhelp_hide();
 		vhelp_subup_show();
+
+			// Hilight the "Change Channel" active element on the vdest main page. This subup points to it
 		$( ".vdest-btn-numpad" ).addClass( "vhelp-vdest-effect-bigger" );
 		return false;
 	} ).mouseenter( function()
@@ -378,9 +393,9 @@ function vhelp_create( fn_exit )
 		return false;
 	} );
 
-	$_vhelp_btn_exit = $( "#vhelp-btn-x" ).click( function()   // EXIT
+	$_vhelp_btn_exit = $( "#vhelp-btn-x" ).click( function()               //////// EXIT -- Close the help
 	{
-			// clear off any residual effects
+			// Clear any residual effects
 		for( var dx = 0; dx < $_vdestinations.length; dx++ )
 		{
 			$_vdestinations[dx].removeClass( "vhelp-vdest-effect-bigger" );
@@ -390,45 +405,43 @@ function vhelp_create( fn_exit )
 		$( ".vdest-btn-default" ).removeClass( "vhelp-vdest-effect-bigger" );
 		$( ".vdest-btn-numpad" ).removeClass( "vhelp-vdest-effect-bigger" );
 
-		_vhelp_hide( os1_is_small_device() ? 0 : 300 );
+		_vhelp_hide();
 		fn_exit();
 		return false;
-	} ).mouseenter( function()
-	{
-		$(this).css( "cursor", "pointer" );
-		return false;
-	} ).mouseleave( function()
-	{
-		vdest_css_cursor_default( $(this) );
-		return false;
-	} ).mousedown( function()
-	{
-		vhelp_mdown( $(this) );
-		return false;
-	} ).mouseup( function()
-	{
-		vhelp_mup( $(this) );
-		vhelp_effect_set( $(this), null );
-		return false;
-	} );
+	} )
+	.mouseenter( function() { $(this).css( "cursor", "pointer" ); return false; } )
+	.mouseleave( function() { vdest_css_cursor_default( $(this) ); return false; } )
+	.mousedown(  function() { vhelp_mdown( $(this) ); return false; } )
+	.mouseup(    function() { vhelp_mup( $(this) ); vhelp_effect_set( $(this), null ); return false; } );
 
 
-													/*******************  SUBUP's ***/
+																							/********************/
+																							/********************/
+																							/*******************    S U B U P ' s   ***/
+																							/********************/
+																							/********************/
+
 
 	$_vhelp_subup = $( "#vhelp-cntnr-subup" );
 	$_vhelp_subup_title = $_vhelp_subup.find( ".vhelp-title" );
 	$_vhelp_subup_info = $_vhelp_subup.find( ".vhelp-info-intro" );
 
-	$( "#vhelp-subup-x, #vhelp-subup-back" )
-	 .click(      function() { vhelp_subup_hide(); vhelp_subup_fn_exit(); return false; } )
-	 .mouseenter( function() { $(this).css( "cursor", "pointer" ); return false; } )
-	 .mouseleave( function() { vdest_css_cursor_default( $(this) ); return false; } )
-	 .mousedown(  function() { vhelp_mdown( $(this) ); return false; } )
-	 .mouseup(    function() { vhelp_mup( $(this) ); vhelp_effect_set( $(this), null ); return false; } );
+	$( "#vhelp-subup-x" )
+	.click(    function() { vhelp_subup_hide(); vhelp_subup_fn_exit(true); return false; } )
+	.mouseenter( function() { $(this).css( "cursor", "pointer" ); return false; } )
+	.mouseleave( function() { vdest_css_cursor_default( $(this) ); return false; } )
+	.mousedown(  function() { vhelp_mdown( $(this) ); return false; } )
+	.mouseup(    function() { vhelp_mup( $(this) ); vhelp_effect_set( $(this), null ); return false; } );
+	$( "#vhelp-subup-back" )
+	.click( function() { vhelp_subup_hide(); vhelp_subup_fn_exit(false); return false; } )
+	.mouseenter( function() { vdest_css_cursor_pointer( $(this) ); vhelp_effect_set( $(this).find(".vhelp-goback"), "vhelp-effect-hover" ); return false; } )
+	.mouseleave( function() { vdest_css_cursor_default( $(this) ); vhelp_effect_set( $(this).find(".vhelp-goback"), null ); return false; } )
+	.mousedown(  function() { vhelp_mdown( $(this) ); return false; } )
+	.mouseup(    function() { vhelp_mup( $(this) ); vhelp_effect_set( $(this), null ); return false; } );
 
 }// _create()
 
-
+	// Emulate a mouse click
 function vhelp_mouseclick_emul( $o )
 {
 	$o.mousedown().click();
@@ -439,6 +452,7 @@ function vhelp_mouseclick_emul( $o )
 	}, 40 );
 }
 
+	// Capture the escape key to exit
 function vhelp_keyup( evt )
 {
 	if( evt.keyCode === 27/*escape*/ )
@@ -448,21 +462,23 @@ function vhelp_keyup( evt )
 		else if( vhelp_is_showing_subpup() )
 			vhelp_mouseclick_emul( $("#vhelp-subup-x") );
 	}
-}//_keyup()
+}
 
 
-function $_vhelp_size_and_offset_set( $o, height, proportions, offset, font_size, font_size_title )
+	// Size, position, and scale a subup
+function $_vhelp_subup_size_and_offset_set( $o, height, proportions, offset, font_size, font_size_title )
 {
 	if( $o )
 	{
 		$o.height( height );
-		$o.width( height * proportions ); // ratio of the dimensions of the img
+		$o.width( height * proportions ); // ratio of the dimensions of the bkg img
 		$o.css( "font-size", font_size );
 		$o.find( ".vhelp-title" ).css( "font-size", font_size_title );
 		$o.css( { top:offset.top, left:offset.left } );
 	}
 }
 
+	// Location data for each subup
 var hlp_posn      = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 var hlp_posn_out  = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 var hlp_posn_in   = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
@@ -472,6 +488,7 @@ var hlp_posn_pwr  = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 var hlp_posn_dflt = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 var hlp_posn_chn  = { hide:{ top:0, left:0 }, show:{ top:0, left:0 } };
 
+	// Sizing data
 var hlp_size_out  = { height:100, props:1.4 };
 var hlp_size_in   = { height:100, props:1.4 };
 var hlp_size_sgl  = { height:100, props:1.4 };
@@ -486,17 +503,19 @@ var font_size_title;
 
 function vhelp_size_and_offset_set( height, l_top, l_left )
 {
+		// Html fonts don't scale when the screen resizes, so do it in script
 	font_size = height * 0.0500;
 	font_size_title = height * 0.066;
 	var hlp_props_default = 876 / 512; // Dimensions of the background image
-	$( "#vhelp-subup-x" ).width( height * 0.099 ).height( height * 0.099 );
+	$( "#vhelp-subup-x" ).width( height * 0.099 ).height( height * 0.099 ); // Scale the exit button
 
-
+		// The main help dialog
 	hlp_posn.show = { top:l_top, left:l_left };
-	$_vhelp_size_and_offset_set( $_vhelp, height, hlp_props_default, hlp_posn.show, font_size, font_size_title );
+	$_vhelp_subup_size_and_offset_set( $_vhelp, height, hlp_props_default, hlp_posn.show, font_size, font_size_title );
 
 	var hlp_width_max = $_vhelp.width();
 
+		// Recalculate the subup's too
 	hlp_posn_out.show  = hlp_posn_out.hide = { top:l_top + (height * 0.20), left:l_left + (hlp_width_max * 0.44) };
 	hlp_size_out.height = height * 0.63;
 	hlp_size_out.props = hlp_props_default * 0.9;
@@ -525,21 +544,38 @@ function vhelp_size_and_offset_set( height, l_top, l_left )
 	hlp_size_chn.height = height * 0.52;
 	hlp_size_chn.props = hlp_props_default;
 
+	// Checkboxes and power buttons not shown on mobile devices
+	if( os1_is_small_device() )
+	{
+		$_vhelp_ary[3].hide();
+		$_vhelp_ary[4].hide();
+
+			// Trying to hit a moving target... buttons are lower if a small device
+		hlp_posn_dflt.show.top += (height * 0.30);
+		hlp_posn_chn.show.top += (height * 0.40);
+	} else
+	{
+		if( !$_vhelp_ary[3].is( ":visible" ) )
+			$_vhelp_ary[3].show();
+		if( !$_vhelp_ary[4].is( ":visible" ) )
+			$_vhelp_ary[4].show();
+	}
+
 	vhelp_subup_size_and_offset_set();
 }
 
-function _vhelp_show() // internal
+function _vhelp_show() // internally accessed
 {
 	os1_popup_show( $_vhelp, 400, hlp_posn.hide, hlp_posn.show );
 }
 
-function vhelp_show( offset ) // external
+function vhelp_show( offset ) // external - called from vdest main page
 {
 	hlp_posn.hide = offset;
 	os1_popup_show( $_vhelp, 400, hlp_posn.hide, hlp_posn.show );
 }
 
-function _vhelp_hide()
+function _vhelp_hide() // internal
 {
 	os1_popup_hide( $_vhelp, 400, hlp_posn.hide );
 }
@@ -548,9 +584,9 @@ function _vhelp_hide()
 										/**************************** SUB-POPUPs
                                          ****************************/
 
-var vhelp_subup_fn_exit;
-var vhelp_subup_posn;
-var vhelp_subup_size;
+var vhelp_subup_fn_exit; // The function to call when a subup is closed
+var vhelp_subup_posn; // Global position of the currently shown subup, set when the subup is shown
+var vhelp_subup_size; // Global size of the currently shown subup, set when it is shown
 
 function vhelp_subup_size_and_offset_set()
 {
@@ -586,7 +622,7 @@ function vhelp_subup_size_and_offset_set()
 
 	if( vhelp_is_showing_subpup() )
 	{
-		$_vhelp_size_and_offset_set( $_vhelp_subup, vhelp_subup_size.height, vhelp_subup_size.props, vhelp_subup_posn.show, font_size * 0.95, font_size_title * 0.95 );
+		$_vhelp_subup_size_and_offset_set( $_vhelp_subup, vhelp_subup_size.height, vhelp_subup_size.props, vhelp_subup_posn.show, font_size * 0.95, font_size_title * 0.95 ); // Scale down the fonts a bit in the subups
 	}
 }
 

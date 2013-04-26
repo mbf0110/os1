@@ -52,3 +52,4 @@ img#vhelp-subup-x          		{ float:right;  width:6.5%;  margin:-1.0% 5.0% 0 0;
 #vhelp-cntnr-subup .vhelp-arrow-pwr                { width:35%;  position:absolute;  left:-19%;  top:70%; }
 #vhelp-cntnr-subup .vhelp-arrow-dflt               { width:40%;  position:absolute;  left:80%;  top:50%; }
 #vhelp-cntnr-subup .vhelp-arrow-chn                { width:40%;  position:absolute;  left:80%;  top:50%; }
+.vhelp-goback               	{ float:left;  margin:2.0% 0 0 1.5%; }
